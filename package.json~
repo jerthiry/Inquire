@@ -1,9 +1,9 @@
 {
   "name": "blog",
   "description": "A simple blogging system",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
-  "main": "app.js",
+  "main" : "app.js",
   "scripts": {
     "start": "node local.js",
     "test": "mocha test"
@@ -19,8 +19,8 @@
   },
   "devDependencies": {
     "async": "^0.9.0",
-    "mocha": "~2.2.4",
-    "chai": "~2.3.0"
+    "mocha": "^2.2.1",
+    "chai": "^2.1.2"
   },
   "engines": {
     "node": "^0.10.x"
