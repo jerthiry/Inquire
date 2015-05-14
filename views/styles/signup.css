@@ -1,0 +1,5 @@
+@import url("forms.css");
+
+form label {
+   min-width: 9em;
+}

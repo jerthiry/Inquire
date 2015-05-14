@@ -1,0 +1,8 @@
+form input[type="submit"] {
+   margin-top: 1em;
+}
+
+label.error {
+   font-weight: normal;
+   margin-left: 1em;
+}

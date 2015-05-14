@@ -1,0 +1,5 @@
+  Root User:     admin
+   Root Password: tzeRSc6wGqWN
+   Database Name: inquire
+
+Connection URL: mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/
