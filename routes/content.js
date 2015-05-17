@@ -1,3 +1,12 @@
+
+
+/** content.js
+ * This file contains functions that are necesserary to perfom actions
+ * regarding surveys
+ */
+
+
+
 "use strict";
 
 var Polls = require('../persistence/Polls');
@@ -12,10 +21,12 @@ module.exports = function(app) {
       answers = new Answers(db);
 
   return {
+    //Renders the home page, with public polls
     home: function (req, res, next) {
         polls.getPublicPolls(function(error, results) {
           if(error) return next(error);
 
+        //If connected, renders index without the signup option
         if (req.cookies.user)
         {
           users.getUserData(req.cookies.user.username, function(error, user) {
@@ -33,6 +44,7 @@ module.exports = function(app) {
             }
           });
         }
+        //Else renders index with inquire presentation + signup button
         else
         {
           res.render('index', {
@@ -45,11 +57,16 @@ module.exports = function(app) {
  
     },
 
+    //Surveys function
     polls: {
+
+      //Renders the new poll page
       input: function (req, res, next) {
         if (!req.cookies.session) {return res.redirect("/login")}
         res.render('new-poll', {session: req.cookies.session, user: req.cookies.user});
       },
+
+      //Checks if everything is correct
       validate: function (req, res, next) {
         var title = req.body.title,
             subtitle = req.body.subtitle,
@@ -57,8 +74,11 @@ module.exports = function(app) {
             startingdate = req.body.startingdate,
             closingdate = req.body.closingdate,
             privacy = req.body.privacy,
+            //3-60 characters
             titleRE=/^.{3,60}$/,
+            //0-60 characters
             subtitleRE=/^.{0,60}$/,
+            //0-400 characters
             descriptionRE=/^.{0,400}$/,
             answer = {
               session: req.cookies.session,
@@ -80,6 +100,7 @@ module.exports = function(app) {
         var dd = today.getDate();
         var mm = today.getMonth()+1; //January is 0!
         var yyyy = today.getFullYear();
+        //Adds 0 if day or month is only one digit
         if(dd<10){
           dd='0'+dd
         } 
@@ -100,8 +121,10 @@ module.exports = function(app) {
         if(Object.keys(errors).length === 0)
           next();
         else
-          res.render("new-poll", answer); // afficher erreurs
+          res.render("new-poll", answer); // Renders new poll with already completed fields
       },
+
+      //If validate returns no error, then this function adds the poll to the database
       add: function (req, res, next) {
 
         if (!req.cookies.session) return res.redirect("/signup");
@@ -128,11 +151,15 @@ module.exports = function(app) {
               errors: {}
             },
             errors = answer.errors;
-        polls.addPoll(title, subtitle, description, startingdate, closingdate, privacy, req.cookies.user, questnumber, function(error, permalink) {
+            //Inserts the survey in the database
+          polls.addPoll(title, subtitle, description, startingdate, closingdate, privacy, req.cookies.user, questnumber, function(error, permalink) {
           if (error) next(error);
+          //Redirects to a page that lets you add question to the survey
           res.redirect("/polls/" + permalink +"/newquestion");
         });
       },
+
+      // Renders the main page of a poll
       byPermalink: function (req, res, next) {
         var permalink = req.params.permalink;
         polls.getPollByPermalink(permalink, function(error, poll) {
@@ -141,7 +168,10 @@ module.exports = function(app) {
           }
           else {
             if (!poll)
+              //if the poll doesn't exist, redirects to the 404 page
               return res.redirect('/../404');
+
+            //owner lets you see the results if you're the owner of the survey
             var owner = false;
             if(req.cookies.user) {
               if(req.cookies.user._id==poll.author)
@@ -157,19 +187,8 @@ module.exports = function(app) {
           }
         });
       },
-      byTag: function (req, res) {
-        var tag = req.params.tag;
-        polls.getPollsByTag(tag, function (error, polls) {
-          if (error)
-            next(error);
-          else
-            res.render('polls-by-tag', {
-              session: req.cookies.session,
-              tag: req.params.tag,
-              polls: polls
-            });
-        });
-      },
+
+      //Useful for the personnal surveys page
       byUsername: function (req, res, next) {
         if (req.cookies.user)
         {
@@ -187,107 +206,25 @@ module.exports = function(app) {
             }
           });
         }
+        //If not conneted, redirects to index
         else
         {
           res.redirect('login');
         }
-    }
-  },
-    answerFill : {
-      validate: function (req, res, next) {
-        var permalink = req.params.permalink;
-        var question = req.params.question-1;
-        polls.getPollByPermalink(permalink, function(error, poll) {
-          if (error)
-            next(error);
-          else {
-            var textfieldRE=/^.{0,400}$/,
-                answer = {
-                  session: req.cookies.session,
-                  user : req.cookies.user,
-                  ans : req.body.answer,
-                  poll : poll,
-                  question: poll.question[question],
-                  errors: {}
-                },
-                errors = answer.errors;
-                console.log(answer.ans);
-            if (poll.question[question].type == 'textarea')
-            {
-              if(!textfieldRE.test(answer.ans))
-              errors.ans = "The text is limited to 400 characters.";
-            }
-            else if (poll.question[question].type == 'radio')
-            {
-              if(answer.ans === undefined)
-                errors.ans = "One proposition must be choose";
-            }
-            else
-            {
-              if(answer.ans === undefined)
-                errors.ans = "One or more proposition must be choose";
-            }
-
-            if(Object.keys(errors).length === 0)
-              next();
-            else
-              res.render("question", answer); // afficher erreurs
-          }
-        });
-      },
-      input:  function (req, res, next) {
-        var permalink = req.params.permalink;
-        var question = req.params.question-1;
-        polls.getPollByPermalink(permalink, function(error, poll) {
-          if (error)
-            next(error);
-          else {
-            if (!poll)
-              res.status(400).send("Not found");
-            if(!poll.question[question])
-              return res.redirect('/');
-            var title ;
-            return res.render('question', {
-              session: req.cookies.session,
-              user: req.cookies.user,
-              poll: poll,
-              question: poll.question[question]
-            });
-          }
-        });
-      },
-      perform: function (req, res, next) {
-        var permalink = req.params.permalink,
-        question = req.params.question;
-        polls.getPollByPermalink(permalink, function(error, poll) {
-          var answer = req.body.answer;
-          answers.addAnswer(permalink, question, answer, function(error, answer) {
-            if (error)
-              next(error);
-            else{
-              question++;
-              res.redirect('/polls/'+permalink+'/'+question);
-            }
-          });
-
-
-
-        });
       }
     },
 
 
-
-
-
+    //Adding questions to a survey
     question : {
+
+      //Renders a page to add a question
       new: function (req, res, next) {
         var permalink = req.params.permalink;
         polls.getPollByPermalink(permalink, function(error, poll) {
           if (error)
             next(error);
           else{
-            console.log("lol");
             if(req.cookies.user._id == poll.author) {
               res.render('new-question', {
                 session: req.cookies.session,
@@ -304,6 +241,8 @@ module.exports = function(app) {
 
         });
       },
+
+      //Adding the question to the database
       add: function(req, res, next) {
         if (!req.cookies.session) return res.redirect("/signup");
 
@@ -315,6 +254,7 @@ module.exports = function(app) {
             cleanprops = [];
         if (type=='radio' || type=='checkbox')
         {
+          //Gets the proposition and places them in an array (they are separeted by an end of line character)
           var rawprop=req.body.choices;
           props = rawprop.split(/[\r\n]+/);
           var cnt = 0;
@@ -346,86 +286,162 @@ module.exports = function(app) {
         else if(question.type == 'checkbox') {
           question.isCheck = true;
         }
+        //Calls the insert function then redirects to a new question page
         polls.addQuestion(permalink, question, function(error, permalink2) {
 
           permalink2=permalink;
-          //if (error) next(error);
 
           res.redirect("/polls/" + permalink2 +"/newquestion");
         });
       },
+
+
+      //Checks if the question is valid
       validate: function (req, res, next) {
         var permalink = req.params.permalink;
         polls.getPollByPermalink(permalink, function(error, poll) {
-        if(req.body.answertype!='textarea') {
-          var rawprop=req.body.choices;
-          var cleanprops = [];
-          var props = rawprop.split(/[\r\n]+/);
-          var cnt = 0;
-          for(var i=0; i<props.length; i++) {
-            props[i] = props[i].trim();
-            if(props[i]!='') {
-              cleanprops[cnt]=props[i];
-              cnt++;
+          if(req.body.answertype!='textarea') {
+            var rawprop=req.body.choices;
+            var cleanprops = [];
+            var props = rawprop.split(/[\r\n]+/);
+            var cnt = 0;
+            for(var i=0; i<props.length; i++) {
+              props[i] = props[i].trim();
+              if(props[i]!='') {
+                cleanprops[cnt]=props[i];
+                cnt++;
+              }
             }
           }
-        }
-        else {
-          var props = null;
-        }
-        var labelRE=/^.{3,160}$/,
-        answer = {
-          session: req.cookies.session,
-          label : req.body.questionlabel,
-          precision : req.body.precision,
-          type : req.body.answertype,
-          props : props,
-          poll: poll,
-          errors: {}
-        },
-        errors = answer.errors;
-        if(req.cookies.user)
-          answer.user=req.cookies.user;
-
-
-        if (!labelRE.test(answer.label))
-          errors.questionlabel = "The question has to contain between 3 and 160 characters";
-
-        if(answer.type!='textarea') {
-          if(answer.props.length < 2) {
-            errors.proposition = "Minimum 2 propositions.";
+          else {
+            var props = null;
           }
-        }
+          //3-60 characters
+          var labelRE=/^.{3,160}$/,
+          answer = {
+            session: req.cookies.session,
+            label : req.body.questionlabel,
+            precision : req.body.precision,
+            type : req.body.answertype,
+            props : props,
+            poll: poll,
+            errors: {}
+          },
+          errors = answer.errors;
+          if(req.cookies.user)
+            answer.user=req.cookies.user;
 
-        if(Object.keys(errors).length === 0)
-          next();
-        else
-          res.render("new-question", answer); // afficher erreurs
-      });
-    }
+
+          if (!labelRE.test(answer.label))
+            errors.questionlabel = "The question has to contain between 3 and 160 characters";
+
+          if(answer.type!='textarea') {
+            if(answer.props.length < 2) {
+              errors.proposition = "Minimum 2 propositions.";
+            }
+          }
+
+          if(Object.keys(errors).length === 0)
+            next();
+          else
+            res.render("new-question", answer); // afficher erreurs
+        });
+      }
+    },
+
+
+    //Answering a survey
+    answerFill : {
+
+      //Checks if the answer is valid
+      validate: function (req, res, next) {
+        var permalink = req.params.permalink;
+        var question = req.params.question-1;
+        polls.getPollByPermalink(permalink, function(error, poll) {
+          if (error)
+            next(error);
+          else {
+            var textfieldRE=/^.{0,400}$/,
+                answer = {
+                  session: req.cookies.session,
+                  user : req.cookies.user,
+                  ans : req.body.answer,
+                  poll : poll,
+                  question: poll.question[question],
+                  errors: {}
+                },
+                errors = answer.errors;
+                console.log(answer.ans);
+            if (poll.question[question].type == 'textarea')
+            {
+              if(!textfieldRE.test(answer.ans))
+              errors.ans = "The text is limited to 400 characters.";
+            }
+            else if (poll.question[question].type == 'radio')
+            {
+              if(answer.ans === undefined)
+                errors.ans = "One proposition must be chosen";
+            }
+            else
+            {
+              if(answer.ans === undefined)
+                errors.ans = "One or more proposition must be chosen";
+            }
+
+            if(Object.keys(errors).length === 0)
+              next();
+            else
+              res.render("question", answer); // afficher erreurs
+          }
+        });
+      },
+
+      //Renders the question answering page
+      input:  function (req, res, next) {
+        var permalink = req.params.permalink;
+        var question = req.params.question-1;
+        polls.getPollByPermalink(permalink, function(error, poll) {
+          if (error)
+            next(error);
+          else {
+            if (!poll)
+              res.status(400).send("Not found");
+            if(!poll.question[question])
+              return res.redirect('/');
+            var title ;
+            return res.render('question', {
+              session: req.cookies.session,
+              user: req.cookies.user,
+              poll: poll,
+              question: poll.question[question]
+            });
+          }
+        });
+      },
+
+      //Adds the answer to the database then moves on to the next question
+      perform: function (req, res, next) {
+        var permalink = req.params.permalink,
+        question = req.params.question;
+        polls.getPollByPermalink(permalink, function(error, poll) {
+          var answer = req.body.answer;
+          answers.addAnswer(permalink, question, answer, function(error, answer) {
+            if (error)
+              next(error);
+            else{
+              question++;
+              res.redirect('/polls/'+permalink+'/'+question);
+            }
+          });
+        });
+      }
     },
 
 
 
 
-// .----------------.  .----------------.     .----------------.  .----------------. 
-// | .--------------. || .--------------. |   | .--------------. || .--------------. |
-// | |  _________   | || |     ____     | |   | |  ________    | || |     ____     | |
-// | | |  _   _  |  | || |   .'    `.   | |   | | |_   ___ `.  | || |   .'    `.   | |
-// | | |_/ | | \_|  | || |  /  .--.  \  | |   | |   | |   `. \ | || |  /  .--.  \  | |
-// | |     | |      | || |  | |    | |  | |   | |   | |    | | | || |  | |    | |  | |
-// | |    _| |_     | || |  \  `--'  /  | |   | |  _| |___.' / | || |  \  `--'  /  | |
-// | |   |_____|    | || |   `.____.'   | |   | | |________.'  | || |   `.____.'   | |
-// | |              | || |              | |   | |              | || |              | |
-// | '--------------' || '--------------' |   | '--------------' || '--------------' |
-//  '----------------'  '----------------'     '----------------'  '----------------'
-// // ON A FAIT DE LA MERDE AVEC Answers.js :/
 
-
-
-
-
-
+    //Viewing results of a survey
     results : {
 
       getAnswers: function (req, res, next) {
@@ -440,8 +456,14 @@ module.exports = function(app) {
           }
         });
         polls.getPollByPermalink(permalink, function(error, poll) {
+          console.log(poll.author+req.cookies.user.username);
           if (error)
             next(error);
+          //If not the author, 404
+          else if(poll.author!=req.cookies.user._id)
+          {
+              res.redirect("/404");
+          }
           else {
             var results = [];
             for(var i=0; i<poll.questnumber; i++){
@@ -449,10 +471,10 @@ module.exports = function(app) {
               poll.question[i].res=[];
               results[i] = [];
 
-              //On doit itérer pour les qcm
+              //Iterates through the propositions
               if(poll.question[i].isCheck || poll.question[i].isRadio){
 
-                //Faire un tableau de la meme taille que props avec les nombre de fois que la réponse a été choisie
+                //Array with same length than props with number of time the answer was chosen
                 for(var j=0; j<poll.question[i].props.length; j++)
                 {
                   answers.countAnswers(permalink, i, j, poll.question[i].props[j], function(error, count, k, l){ 
@@ -467,20 +489,16 @@ module.exports = function(app) {
                 }
               }
 
-              //On reprend juste un tableau de réponses si c'est une question ouverte
+              //If text question, array with all the answers
               else {
                 answers.getTextAnswers(permalink, i, function(error, textanswers, k) {
                   if(error) {}
                   else {
-
-                    //console.log("I : " +i);
-                   
                     poll.question[k].res=textanswers;
                   }
                 });
               }
             }
-
             return res.render('results', {
               session: req.cookies.session,
               user: req.cookies.user,

@@ -1,9 +1,9 @@
 
 
 /** profile.js
-* This file contains functions that are necessary
-* to manipulate user data (login, signup, updating data)
-*/
+ * This file contains functions that are necessary
+ * to manipulate user data (login, signup, updating data)
+ */
 
 
 
