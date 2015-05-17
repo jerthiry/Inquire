@@ -5,7 +5,7 @@
 \textclass article
 \use_default_options true
 \maintain_unincluded_children false
-\language english
+\language french
 \language_package default
 \inputencoding auto
 \fontencoding global
@@ -45,8 +45,8 @@
 \end_index
 \secnumdepth 3
 \tocdepth 3
-\paragraph_separation indent
-\paragraph_indentation default
+\paragraph_separation skip
+\defskip bigskip
 \quotes_language english
 \papercolumns 1
 \papersides 1
@@ -61,14 +61,19 @@
 \begin_body
 
 \begin_layout Title
-inQuire - Une application web de gestion de sondages
+\paragraph_spacing onehalf
+Conception et création d'une application web de gestion de sondages : 
+\emph on
+inQuire
 \end_layout
 
 \begin_layout Author
+\paragraph_spacing onehalf
 Groupe 5 - Thiry Jérôme & Vermeiren Rémy
 \end_layout
 
 \begin_layout Standard
+\paragraph_spacing onehalf
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
 
@@ -77,15 +82,24 @@ LatexCommand tableofcontents
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section*
+\paragraph_spacing onehalf
 Introduction
 \end_layout
 
 \begin_layout Standard
-Ce rapport concerne le projet d'approfoncidssement en sciences informatiques,
+\paragraph_spacing onehalf
+Ce rapport concerne le projet d'approfondissement en sciences informatiques,
  mis en route dans le contexte du cours LSINF1212 dispensé à l'Université
  Catholique de Louvain.
- Il nous a été demandé de concevoir une application web dont le but était
+ Il nous a été demandé de concevoir une application web dont le sujet était
  laissé au choix.
  Nous avons donc décidé de créer une application de gestion de sondages
  qui permettrait, entre autres, de créer, remplir et gérer des sondages
@@ -93,13 +107,30 @@ Ce rapport concerne le projet d'approfoncidssement en sciences informatiques,
  Ce rapport a pour but d'expliquer les différentes étapes de la création
  de cette application, de la phase d'analyse, en passant par sa conception
  jusqu'à son implémentation en elle-même.
+ Le code complet de l'application est disponible sur 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/jerthiry/inquire"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
+\paragraph_spacing onehalf
 Phase d'analyse
 \end_layout
 
 \begin_layout Standard
+\paragraph_spacing onehalf
 Comme dans tout projet, celui-ci a commencé par une phase d'analyse.
  Celle-ci a été entre autres réalisée en utilisant le développement par
  comportements, et, en particulier, en accord en accord la convention 
@@ -109,77 +140,6 @@ cucumber
  dont l'algorithme 1 donne un extrait d'un exemple décrit en début de projet,
  et qui concerne la création de sondage.
  Ces différents travaux nous ont permis de cerner plusieurs besoins.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-Feature: Survey creation
-\end_layout
-
-\begin_layout Plain Layout
-In order to collect data 
-\end_layout
-
-\begin_layout Plain Layout
-As a user 
-\end_layout
-
-\begin_layout Plain Layout
-I want to create a survey 
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-Scenario: User can create a survey 
-\end_layout
-
-\begin_layout Plain Layout
-Given the user is registered 
-\end_layout
-
-\begin_layout Plain Layout
-When the user requests to create a survey 
-\end_layout
-
-\begin_layout Plain Layout
-Then the application proposes different settings 
-\end_layout
-
-\begin_layout Plain Layout
-And the user fills in the settings 
-\end_layout
-
-\begin_layout Plain Layout
-And the user confirms his choices 
-\end_layout
-
-\begin_layout Plain Layout
-And the application creates the survey
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-BDD - Création de sondage
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -212,25 +172,62 @@ Il nous a aussi semblé important de permettre aux utilisateurs de modifier
  des sondages publics les plus récents.
 \end_layout
 
-\begin_layout Section
-Choix de conception
-\end_layout
-
 \begin_layout Standard
-Cette section décrit les choix de conception, et entre autres l'architecture
- du système.
- Le système se base sur plusieurs technologies qui s'occupent de différentes
- parties du système.
-\end_layout
+\begin_inset Float algorithm
+placement h
+wide false
+sideways false
+status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename database.png
+	filename Screenshot from 2015-05-17 11:32:24.png
 	width 100col%
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+BDD - Création de sondage
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+\paragraph_spacing onehalf
+Choix de conception
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing onehalf
+Cette section décrit les choix de conception, et entre autres l'architecture
+ du système.
+ Le système se base sur plusieurs technologies qui s'occupent de différentes
+ parties de celui-ci.
 \end_layout
 
 \begin_layout Standard
@@ -243,44 +240,112 @@ L'application se divise en trois couches importantes.
  Javascript.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename database.png
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Couches de l'application
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
+\paragraph_spacing onehalf
+Couche utilisateur : HTML, CSS, Javascript, Hogan
+\end_layout
+
+\begin_layout Standard
+Le dossier 
+\emph on
+views 
+\emph default
+contient des fichiers qui gèrent l'affichage de l'application dans le navigateur
+, entre autres les différentes pages HTML affichées sur le site.
+ Ces pages utilisent le CSS de Bootstrap.
+ Certaines pages HTML ne sont pas des pages complètes puisqu'elles ne servent
+ qu'à venir s'insérer dans une autre page HTML.
+ On trouve aussi les images (logos, background, ...) dans le dossier images,
+ ainsi que des scripts Javascript, utiles pour changer de contenu dynamiquement
+ en fonction des choix de l'utilisateur, notamment lors du choix du type
+ de question à créer lors de l'initialisation d'un questionnaire.
+ 
+\end_layout
+
+\begin_layout Standard
+Lorsque le serveur désire interpréter des pages HTML, ils leur passe des
+ arguments, qui sont alors traités grâce à un outil de 
+\emph on
+templating
+\emph default
+, Hogan.js.
+\end_layout
+
+\begin_layout Subsection
+\paragraph_spacing onehalf
 Noyau de l'application : Node.js
 \end_layout
 
 \begin_layout Standard
-Le noyau de l'application a été implémentée grâce à Javascript et Node.js.
+\paragraph_spacing onehalf
+Le noyau de l'application a été implémenté grâce à Javascript et Node.js.
  Celui-ci gère plusieurs opérations, dont entre autres :
 \end_layout
 
 \begin_layout Itemize
+\paragraph_spacing single
+\noindent
 Dans app.js :
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
+\paragraph_spacing single
+\noindent
 Le lancement du serveur ;
 \end_layout
 
 \begin_layout Itemize
+\paragraph_spacing single
+\noindent
 La liaison avec la base de données.
 \end_layout
 
 \end_deeper
 \begin_layout Itemize
-Dans le dossier persistence : les différents fichiers gèrent les fonctions
- en rapport avec la base de données.
- Il y a un fichier par type d'objets que l'application utilise (utilisateurs,
- sessions, questions et réponses).
- On y trouve aussi bien des fonctions d'insertions que de récupération ou
- de mise à jour.
-\end_layout
-
-\begin_layout Itemize
+\paragraph_spacing single
+\noindent
 Dans le dossier routes : 
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
+\paragraph_spacing single
+\noindent
 Le routage des différentes pages de l'application, implémenté avec l'aide
  du module 
 \emph on
@@ -290,35 +355,148 @@ Express
 \end_layout
 
 \begin_layout Itemize
+\paragraph_spacing single
+\noindent
 La gestion des requêtes GET et POST sur le serveur, c'est-à-dire les fonctions
  appelées lorsque l'on afficher une page (on peut alors l'interpréter et
  notamment lui passer des variables grâce à Hogan), où que l'on clique sur
  tel ou tel bouton par exemple.
- C'est ici aussi que l'on trouvera les appels aux fonctions du dossier persisten
-ce.
+ C'est ici aussi que l'on trouvera les appels aux fonctions dédiées à la
+ base de données.
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-Dans le dossier views : 
+\begin_layout Subsection
+\paragraph_spacing onehalf
+Couche base de données
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-Les différentes pages HTML affichées sur le site.
- Ces pages utilisent le CSS de Bootstrap.
- Certaines pasges HTML ne sont pas des pages complètes puisqu'elles ne servent
- qu'à venir s'insérer dans une autre page HTML.
- On trouve aussi les images (logos, background, ...) dans le dossier 
+\begin_layout Standard
+\paragraph_spacing onehalf
+Les fichiers constituant la couche base de données se trouvent dans le dossier
+ 
 \emph on
-images
+persistence.
+ 
 \emph default
-.
+Ceux-ci contiennent les fonctions qui interagissent directement avec la
+ base de données.
+ Il existe un fichier par type d'objets que l'on peut retrouver dans la
+ base de données (utilisateurs, sessions, questionnaires et réponses).
+ On y trouve aussi bien des fonctions d'insertion que de récupération ou
+ de mise à jour.
 \end_layout
 
-\end_deeper
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Choix d'implémentation du système
+\end_layout
+
+\begin_layout Standard
+Dans cette section sont expliqués nos choix d'implémentation.
+ Nous ne reprenons évidemment que les choix importants, ou ceux qui nous
+ semblent les moins évidents.
+\end_layout
+
+\begin_layout Subsection
+Base de données
+\end_layout
+
+\begin_layout Standard
+La base de données étant implémentée sur base d'objets Javascript, elle
+ est très flexible d'utilisation.
+ Nous avons cependant du faire certains choix qui nous semblaient pertinents.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename MongoDBDiagram (3).png
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Diagramme de la base de données
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En premier lieu, nous avons décidé de séparer les objets questionnaires
+ et réponses.
+ Nous aurions pu rajouter les réponses à l'objet questionnaire à chaque
+ nouvelle soumission, mais cela n'aurait pas été idéal.
+ En effet, si le sondage est un minimum populaire, cela signifie qu'il faudrait
+ pouvoir écrire sur l'objet constamment, ce qui engendrerait des risques
+ de corruption ou, au mieux, de ralentissement.
+ De plus, la suppression des réponses (pas encore implémentée mais imaginable
+ dans le futur) ne s'en trouve que simplifiée.
+\end_layout
+
+\begin_layout Standard
+Ensuite, le fait que le 
+\emph on
+templating
+\emph default
+ HTML se fasse avec Hogan.js nous a contraints à rajouter des propriétés
+ à l'objet questionnaire.
+ En effet, Hogan.js ne peut gérer que des conditions binaires (booléennes).
+ Comme l'affichage d'une question diffère selon son type, il a fallu rajouter
+ des champs 
+\emph on
+isCheck
+\emph default
+, 
+\emph on
+isRadio
+\emph default
+ et 
+\emph on
+isText 
+\emph default
+afin de savoir, par exemple, s'il faut afficher des boutons radio ou des
+ cases à cocher (choix simple ou multiple).
+\end_layout
+
+\begin_layout Subsection
+Cookies
+\end_layout
+
+\begin_layout Standard
+Nous avons décidé d'utiliser des cookies afin de simplifier l'implémentation
+ mais aussi d'alléger la tâche du serveur.
+ Ces cookies contiennent entre autres la session courante et les informations
+ de l'utilisateur.
+ Cela permet d'avoir un accès direct à ses nom et prénom, qui sont affichés
+ sur toutes les pages, plutôt que de rechercher dans la base de données.
+ Cela permet donc d'être plus efficace.
 \end_layout
 
 \end_body
