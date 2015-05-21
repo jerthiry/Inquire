@@ -1,3 +1,12 @@
+
+
+/** profile.js
+ * This file contains functions that are necessary
+ * to manipulate user data (login, signup, updating data)
+ */
+
+
+
 "use strict";
 
 var Users = require('../persistence/Users');
@@ -8,12 +17,11 @@ module.exports = function(app) {
 	users = new Users(db);
 
 	return {
-		get: {
-			input: function (req, res, next) {
-				if (!req.cookies.user) return res.redirect("/profile")
-					res.render('profile', { user: req.cookies.user });
 
-			},
+		//Get functions
+		get: {
+
+			//Renders the user data page with all user info on it
 			profile: function (req, res, next) {
 
 				if (req.cookies.user)
@@ -46,23 +54,32 @@ module.exports = function(app) {
 			}
 
 		},
+
+		//Set functions
 		set: {
+
+			//Validates the data the user changed, checks if everything is valid
 			validate : function(req, res, next) {
 
 				users.getUserData(req.cookies.user._id, function(error, user) {
 					if (error)
 						next(error);
+					//Gets what user filled in on his profile page, then creates
+					//tests (xxxxxRE) then checks if eveything is ok
 					else {
-						
 						var username = req.body.username,
 						password = req.body.password,
 						verify = req.body.verify,
 						lastname =req.body.lastname,
 						firstname=req.body.firstname,
 						email = req.body.email,
+						//Alphanumeric, 3 to 20 characters
 						usernameRE = /^[a-zA-Z0-9_-]{3,20}$/,
+						//3 to 20 characters
 						passwordRE = /^.{3,20}$/,
+						//3 to 40 characters
 						nameRE=/^.{3,40}$/,
+						//email must be like xxxx@xxxx.xxxx
 						emailRE = /^[\S]+@[\S]+\.[\S]+$/,
 						answer = { username: username, email: email, password: password, tmplastname: lastname, tmpfirstname: firstname, firstname: user.firstname, lastname: user.lastname, errors: {} },
 						errors = answer.errors;
@@ -87,19 +104,23 @@ module.exports = function(app) {
 							}
 						}
 						if(Object.keys(errors).length === 0){
-		          // Validé : passer la requête au gestionnaire suivant.
-		          next();
-		        }
-		        else {
-		        	answer.session=req.cookies.session;
-		        	res.render('profile', answer);
+		          			// Validated, passes request to next function
+		          			next();
+		        		}
 
-		        }
-
-		      }
-		    });
+				        //If not connected, only prints "You are not connected"
+				        else {
+				        	answer.session=req.cookies.session;
+				        	res.render('profile', answer);
+				        }
+		      		}
+		    	});
 			},
+
+			//Calls the persistence function
 			perform: function(req, res, next) {
+
+				//gets the fields to be changed
 				var username = req.body.username,
 				password = req.body.password,
 				email = req.body.email,
@@ -108,6 +129,7 @@ module.exports = function(app) {
 				answer = { username: username, email: email,lastname: lastname, firstname: firstname,  errors: {} },
 				errors = answer.errors;
 
+				//Replaces in the database
 				users.updateUser(username, password, email, lastname, firstname, function(error, user) {
 					if (error) {
 						if (error.code == '11000') {
@@ -120,18 +142,14 @@ module.exports = function(app) {
 					}
 					else {
 						users.getUserData(username, function(error, user) {
-
-
+							//Updates the cookies
 							res.cookie('session', req.cookies.session);
 							res.cookie('user', user);
 							res.redirect('/');
 						});
 					}
-
 				});
 			}
-
-
 		}
 	}
 }

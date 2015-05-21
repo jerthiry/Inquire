@@ -1,3 +1,11 @@
+
+
+/**session.js
+ * This file contains functions that are necessary to handle
+ * user session actions, such as login, logout, signup
+ */
+
+
 "use strict";
 
 var Users = require('../persistence/Users'),
@@ -12,6 +20,7 @@ module.exports = function(app) {
       sessions = new Sessions(db);
 
   return {
+    //Useful for connection
     authentication: {
       check: function(req, res, next) {
         var sessionId = req.cookies.session;
@@ -21,13 +30,20 @@ module.exports = function(app) {
         });
       }
     },
+
+    //Login functions
     login: {
+
+      //Renders the login page
       input: function(req, res, next) {
         res.render("login");
       },
+
       validate:  function(req, res, next) {
         next();
       },
+
+      // Checks if login credentials are ok, and if so starts a session and updates the cookies
       perform: function(req, res, next) {
         var username = req.body.username;
         var password = req.body.password;
@@ -43,6 +59,8 @@ module.exports = function(app) {
                 next(error);
             });
           }
+
+          //If errors then prompts to reenter credentials
           else {
             var answer = { username: username, errors: {} };
             if (error instanceof UnknownUserError) {
@@ -60,6 +78,8 @@ module.exports = function(app) {
         });
       }
     },
+
+    //performs a logout, resets the cookies, redirects to main page
     logout: {
       perform: function(req, res, next) {
         var sessionId = req.cookies.session;
@@ -70,10 +90,15 @@ module.exports = function(app) {
         });
       }
     },
+
+    //Signup functions
     signup: {
+      //Renders the signup page
       input: function(req, res, next) {
         res.render("signup");
       },
+
+      //Checks if everything is valid
       validate: function(req, res, next) {
         var username = req.body.username,
             password = req.body.password,
@@ -81,9 +106,13 @@ module.exports = function(app) {
             lastname =req.body.lastname,
             firstname=req.body.firstname,
             email = req.body.email,
+            //Alphanumeric, 3-20 characters
             usernameRE = /^[a-zA-Z0-9_-]{3,20}$/,
+            //3-20 characters
             passwordRE = /^.{3,20}$/,
+            //3-40 characters
             nameRE=/^.{3,40}$/,
+            //email must be like xxxx@xxxx.xxxx
             emailRE = /^[\S]+@[\S]+\.[\S]+$/,
             answer = { username: username, email: email, password: password, lastname: lastname, firstname: firstname, errors: {} },
             errors = answer.errors;
@@ -108,12 +137,14 @@ module.exports = function(app) {
           }
         }
         if(Object.keys(errors).length === 0)
-          // Validé : passer la requête au gestionnaire suivant.
+          // validated : passes to next function
           next();
         else
-          // Échec : retourner à la page d'enregistrement.
+          // if there are errors, renders the signup page with fields already completed
           res.render("signup", answer);
       },
+
+      // Inserts the user in the database.
       perform: function(req, res, next) {
         var username = req.body.username,
             password = req.body.password,
@@ -123,16 +154,19 @@ module.exports = function(app) {
             answer = { username: username, email: email,lastname: lastname, firstname: firstname,  errors: {} },
             errors = answer.errors;
 
+        //Calls the database insert function
         users.addUser(username, password, email, lastname, firstname, function(error, user) {
           if (error) {
+            //Renders the signup page with fields already completed
             if (error.code == '11000') {
               errors.username = "Username already in use.";
               res.render("signup", answer);
             }
             else
-              next(error); // faire appel au prochain gestionnaire
+              next(error); // next function
           }
           else {
+            //Starts a session and updates the cookies
             sessions.startSession(user['_id'], function(error, sessionId) {
               if (error)
                 next(error);
