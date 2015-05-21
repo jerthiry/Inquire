@@ -16,8 +16,7 @@
     "hogan.js": "^3.0.2",
     "mongodb": "^1.4.34",
     "morgan": "^1.5.1",
-    "path": "^0.11.14",
-    "promise": "~7.0.1"
+    "path": "^0.11.14"
   },
   "devDependencies": {
     "async": "^0.9.0",

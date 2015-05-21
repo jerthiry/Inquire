@@ -1,4 +1,3 @@
-"use strict";
 
 var assert = require('assert'),
 crypto = require('crypto'),

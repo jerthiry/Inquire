@@ -1,6 +1,6 @@
-"use strict";
 
 var assert = require('assert'),
+    crypto = require('crypto'),
     InvalidPasswordError = require('./errors/InvalidPassword'),
     UnknownUserError = require('./errors/UnknownUser');
 
@@ -11,6 +11,7 @@ module.exports = function Users(db) {
     return {
         addUser: function(username, password, email,lastname, firstname, done) {
             // Normalement, on devrait encrypter le mot de passe à ce point-ci.
+            password=crypto.createHash('sha1').update(password).digest('hex');
             var entry = {
                 _id: username,
                 password: password,
@@ -18,13 +19,13 @@ module.exports = function Users(db) {
                 lastname : lastname,
                 firstname : firstname
             };
- 
             users.insert(entry, function (error, result) {
                 if (error) return done(error, null);
                 return done(null, result[0]);
             });
         },
         updateUser: function(username, password, email,lastname, firstname, done) {
+            password=crypto.createHash('sha1').update(password).digest('hex');
           users.findOne({'_id': username}, function(error, user) {
             if (error) return done(error, null);
             user['firstname']=firstname;
@@ -40,6 +41,7 @@ module.exports = function Users(db) {
           });
         },
         validateLogin: function(username, password, done) {
+            password=crypto.createHash('sha1').update(password).digest('hex');
             users.findOne({ '_id' : username }, function(error, user) {
                 if (error) return done(error, null);
                 if (!user) return done(new UnknownUserError(username), null);

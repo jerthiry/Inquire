@@ -371,7 +371,7 @@ module.exports = function(app) {
                   errors: {}
                 },
                 errors = answer.errors;
-                console.log(answer.ans);
+                //console.log(answer.ans);
             if (poll.question[question].type == 'textarea')
             {
               if(!textfieldRE.test(answer.ans))
@@ -456,7 +456,7 @@ module.exports = function(app) {
           }
         });
         polls.getPollByPermalink(permalink, function(error, poll) {
-          console.log(poll.author+req.cookies.user.username);
+          //console.log(poll.author+req.cookies.user.username);
           if (error)
             next(error);
           //If not the author, 404
@@ -467,7 +467,7 @@ module.exports = function(app) {
           else {
             var results = [];
             for(var i=0; i<poll.questnumber; i++){
-              console.log(poll.questnumber);
+              //console.log(poll.questnumber);
               poll.question[i].res=[];
               results[i] = [];
 

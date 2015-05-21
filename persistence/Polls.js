@@ -26,7 +26,6 @@ module.exports = function Polls(db) {
         questnumber: questnumber,
         errors: {}
       };
-      console.log(entry);
       polls.insert(entry, function (error, result) {
         if (error) return done(error, null);
         return done(error, permalink);
@@ -72,28 +71,10 @@ module.exports = function Polls(db) {
           return done(error, items);
         });
       },
-      getPollsByTag: function(tag, done) {
-        polls
-        .find({ tags : tag })
-        .sort('date', -1)
-        //.limit(count)
-        .toArray(function(error, items) {
-          if (error) return done(error, null);
-          return done(error, items);
-        });
-      },
       getPollByPermalink: function(permalink, done) {
         polls.findOne({'permalink': permalink}, function(error, poll) {
           if (error) return done(error, null);
           return done(error, poll);
-        });
-      },
-      addComment: function(permalink, name, email, body, done) {
-        var comment = { author: name, body: body };
-        if (email) comment.email = email;
-        polls.update({permalink: permalink}, {'$push': {comments: comment}}, function(error, count) {
-          if (error) return done(error, null);
-          return done(error, count);
         });
       },
       addQuestion: function(permalink, question, done) {

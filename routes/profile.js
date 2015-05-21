@@ -38,7 +38,6 @@ module.exports = function(app) {
 								firstname: req.cookies.user.firstname,
 								lastname: req.cookies.user.lastname,
 								email: req.cookies.user.email,
-								password: req.cookies.user.password
 							});
 						}
 					});

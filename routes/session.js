@@ -1,12 +1,8 @@
 
-
 /**session.js
  * This file contains functions that are necessary to handle
  * user session actions, such as login, logout, signup
  */
-
-
-"use strict";
 
 var Users = require('../persistence/Users'),
     Sessions = require('../persistence/Sessions'),
@@ -52,6 +48,7 @@ module.exports = function(app) {
             sessions.startSession(user['_id'], function(error, sessionId) {
               if (!error) {
                 res.cookie('session', sessionId);
+                delete user['password'];
                 res.cookie('user', user);
                 res.redirect('/');
               }
