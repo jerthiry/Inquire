@@ -15,7 +15,8 @@ describe('Database', function () {
       });
 
       // Module tests.
-      require('./posts')(db);
+      require('./users')(db);
+      require('./sessions')(db);
 
       // Finished database-related tests.
       done();
