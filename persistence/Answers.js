@@ -6,6 +6,7 @@ module.exports = function Answers(db) {
 	polls = require('./Polls');
 
 	return {
+    //ajout d'une réponse à une question
 		addAnswer : function(permalink, question, answer, done) {
       var entry = {
         permalink: permalink,
@@ -19,6 +20,7 @@ module.exports = function Answers(db) {
         return done(error, result[0]);
       });
     },
+    //récupérations de toutes les réponses d'un questionnaire
     getAnswers: function(permalink, done) {
       answers
         .find({'permalink': permalink})
@@ -29,6 +31,7 @@ module.exports = function Answers(db) {
           return done(error, items);
         });
     },
+    //récupération des réponses sous forme de texte pour une question
     getTextAnswers: function(permalink, question, done) {
 
       answers
@@ -39,6 +42,7 @@ module.exports = function Answers(db) {
           return done(error, items, question);
         });
     },
+    //compte le nombre de réponse pour une proposition d'une question
     countAnswers: function(permalink, question, j, answer, done) {
     	var k = question;
     	var l = j;
@@ -49,6 +53,7 @@ module.exports = function Answers(db) {
       });
 
     },
+    //compte le nombre de réponse pour une proposition de question
     countGlobalAnswers: function(permalink, question, done) {
       answers
         .count({permalink: permalink, question: question}, function(error, count) {

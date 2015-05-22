@@ -6,6 +6,7 @@ module.exports = function Polls(db) {
   crypto = require('crypto');
 
   return {
+    //ajout d'un questionnaire
     addPoll: function(title, subtitle, description, startingdate, closingdate, privacy, author, questnumber, done) {
       // var permalink = title.replace( /\s/g, '_' );
       // permalink = permalink.replace( /\W/g, '' );
@@ -31,6 +32,7 @@ module.exports = function Polls(db) {
         return done(error, permalink);
       });
     },
+    //récupération de tous les questionnaires
     getPolls: function(done) {
       polls
       .find()
@@ -41,6 +43,7 @@ module.exports = function Polls(db) {
           return done(error, items);
         });
       },
+      //récupération de tous les questionnaires publique
       getPublicPolls: function(done) {
         var today = new Date();
         var dd = today.getDate();
@@ -62,6 +65,7 @@ module.exports = function Polls(db) {
           return done(error, items);
         });
       },
+      //récupération des questionnaires lié à un utilisateur
       getPollsByUsername: function(username, done) {
         polls
         .find({ author : username})
@@ -71,12 +75,14 @@ module.exports = function Polls(db) {
           return done(error, items);
         });
       },
+      //récupération d'un questionnaire par son permalink
       getPollByPermalink: function(permalink, done) {
         polls.findOne({'permalink': permalink}, function(error, poll) {
           if (error) return done(error, null);
           return done(error, poll);
         });
       },
+      //ajout d'un question
       addQuestion: function(permalink, question, done) {
         this.getPollByPermalink(permalink, function(error, poll) {
 
