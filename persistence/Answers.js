@@ -39,10 +39,6 @@ module.exports = function Answers(db) {
           return done(error, items, question);
         });
     },
-
-
-
-
     countAnswers: function(permalink, question, j, answer, done) {
     	var k = question;
     	var l = j;
