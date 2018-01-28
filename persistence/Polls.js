@@ -51,10 +51,10 @@ module.exports = function Polls(db) {
         var yyyy = today.getFullYear();
         if(dd<10){
           dd='0'+dd
-        } 
+        }
         if(mm<10){
           mm='0'+mm
-        } 
+        }
         var today = yyyy+'-'+mm+'-'+dd;
         polls
         .find({privacy: false, closingdate: {$gte: today}})
@@ -79,6 +79,7 @@ module.exports = function Polls(db) {
       getPollByPermalink: function(permalink, done) {
         polls.findOne({'permalink': permalink}, function(error, poll) {
           if (error) return done(error, null);
+          console.log(poll);
           return done(error, poll);
         });
       },
@@ -93,7 +94,6 @@ module.exports = function Polls(db) {
           poll.questnumber = poll.questnumber+1;
           question.number = poll.questnumber;
           poll.question[poll.question.length]=question;
-
 
           polls.update({permalink: permalink}, poll, function(error, count) {
             if (error) return done(error, null);

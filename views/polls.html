@@ -11,94 +11,75 @@
   <link href="../../styles/bootstrap.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <link href="../../styles/custom.css" rel="stylesheet">
+</head>
 
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">
 
+        <img class="hidden-xs logo-desktop" src="../images/logo.png" alt="">
+        <img class="visible-xs logo-mobile"src="../images/logo.png">
+      </a>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
 
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-      <![endif]-->
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        {{#session}}
+        <ul class="nav navbar-nav">
 
+          <li><a href="/">Home</a></li>
+          <li><a href="/polls">New survey</a></li>
+          <li><a href="/mypolls">My surveys</a></li>
+        </ul>
+        {{/session}}
+        <div class="nav navbar-nav navbar-right">
+          {{^session}}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/login"><button class="btn btn-default navbar-btn">Log in</button></a></li>
+            <li><a href="/signup"><button class="btn btn-default navbar-btn">Sign up</button></a></li>
+          </ul>
+          {{/session}}
 
-    </head>
-
-    <body>
-
-
-      <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-                    <a class="navbar-brand" href="/">
-
-                <img class="hidden-xs logo-desktop" src="../images/logo.png" alt="">
-                <img class="visible-xs logo-mobile"src="../images/logo.png">
-                </a>
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>                        
-            </button>
-
-
-            
-          </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-            {{#session}}
-            <ul class="nav navbar-nav">
-              
-              <li><a href="/">Home</a></li>
-              
-              <li><a href="/polls">New survey</a></li>
-              <li><a href="/mypolls">My surveys</a></li>
-            </ul>
-            {{/session}}
-            <div class="nav navbar-nav navbar-right">
-              
-              {{^session}}
-              <ul class="nav navbar-nav navbar-right">
-              <li><a href="/login"><button class="btn btn-primary navbar-btn">Log in</button></a></li>
-              <li><a href="/signup"><button class="btn btn-primary navbar-btn">Sign up</button></a></li>
-              </ul>
-              {{/session}}
-
-              {{#session}}
-              <ul class="nav navbar-nav navbar-right">
-
-                <li><a class="no-blue-navbar hidden-xs" href="/profile">Welcome, {{user.firstname}} {{user.lastname}} ! </a></li>
-                <li><a class="no-blue-navbar visible-xs" href="/profile">Profile</a></li>
-                <li><a href="/logout"><button class="btn btn-primary navbar-btn">Log out</button></a></li>
-              </ul>
-              {{/session}}
-            </div>
-          </div>
+          {{#session}}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a class="no-blue-navbar hidden-xs" href="/profile">Welcome, {{user.firstname}} {{user.lastname}} ! </a></li>
+            <li><a class="no-blue-navbar visible-xs" href="/profile">Profile</a></li>
+            <li><a href="/logout"><button class="btn btn-default navbar-btn">Log out</button></a></li>
+          </ul>
+          {{/session}}
         </div>
-      </nav> <!-- Navbar Ending -->
-
-    <div class="text-justify container">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3><input type="text" class="no-border-input" value="{{poll.title}}" name="title" readonly><br>
-              <small><input type="text" class="no-border-input" value="{{poll.subtitle}}" name="subtitle" readonly></small></h3>
-              <h4><small><input type="text" class="no-border-input" value="{{poll.authorfirst}} {{poll.authorlast}}" name="author" readonly></small></h4>
-          </div>
-          <div class="panel-body">
-          {{#poll.description}}
-            <div class="well">
-             <p>{{poll.description}}</p>
-           </div>
-           {{/poll.description}}
-           {{#owner}}
-           <a href="/polls/{{poll.permalink}}/newquestion"><button class="btn btn-primary pull-right">Add questions</button></a>
-           <a href="/polls/{{poll.permalink}}/results"><button class="btn btn-primary pull-right">View results</button></a>
-           {{/owner}}
-           <a href="/polls/{{poll.permalink}}/1"><button class="btn btn-primary pull-right">Fill the survey</button></a>
-         </div>
-       </div>
-      
+      </div>
     </div>
+  </nav> <!-- Navbar Ending -->
 
+  <div class="text-justify container">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3><input type="text" class="no-border-input" value="{{poll.title}}" name="title" readonly><br>
+            <small><input type="text" class="no-border-input" value="{{poll.subtitle}}" name="subtitle" readonly></small></h3>
+            <h4><small><input type="text" class="no-border-input" value="{{poll.authorfirst}} {{poll.authorlast}}" name="author" readonly></small></h4>
+        </div>
+        <div class="panel-body">
+        {{#poll.description}}
+          <div class="well">
+           <p>{{poll.description}}</p>
+         </div>
+         {{/poll.description}}
+         {{#owner}}
+         <a href="/polls/{{poll.permalink}}/newquestion"><button class="btn btn-primary pull-right">Add questions</button></a>
+         <a href="/polls/{{poll.permalink}}/results"><button class="btn btn-primary pull-right">View results</button></a>
+         {{/owner}}
+         <a href="/polls/{{poll.permalink}}/1"><button class="btn btn-primary pull-right">Fill the survey</button></a>
+       </div>
+     </div>
+  </div>
 
-  </body>
+</body>
 </html>

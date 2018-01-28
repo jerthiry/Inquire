@@ -10,6 +10,7 @@ var express = require('express'),
     cookieParser = require('cookie-parser');
 
 var password = process.argv.slice(2)[0];
+if(!password) throw new Error("You need to specify the database password (npm start -- <password>)");
 var url = "mongodb://inquire:"+password+"@cluster0-shard-00-00-vdkgp.mongodb.net:27017"+
           ",cluster0-shard-00-01-vdkgp.mongodb.net:27017,cluster0-shard-00-02-vdkgp.mongodb.net:27017"+
           "/inquire?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
