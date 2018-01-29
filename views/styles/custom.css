@@ -68,15 +68,7 @@
   }
 }
 
-.jumbotron {
-  background-color: #4178b1;
-  color: #fff;
-}
-
-.panel-heading {
-  background-color: #4178b1 !important;
-  color: #fff !important;
-}
+/* Set the colors on the navbar */
 
 .navbar-btn {
   color: #333;
@@ -98,6 +90,23 @@
   border: none;
 }
 
-h3 > small {
+/* Set colors on divs */
+
+.panel-heading > h4 > small,
+.panel-heading > h4 > small > input  {
+  color: #fff !important;
+}
+
+.panel-heading > h3 > small {
+  color: #fff !important;
+}
+
+.jumbotron {
+  background-color: #4178b1;
   color: #fff;
+}
+
+.panel-heading {
+  background-color: #4178b1 !important;
+  color: #fff !important;
 }

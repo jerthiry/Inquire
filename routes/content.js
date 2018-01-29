@@ -425,7 +425,7 @@ module.exports = function(app) {
         question = req.params.question;
         polls.getPollByPermalink(permalink, function(error, poll) {
           var answer = req.body.answer;
-          answers.addAnswer(permalink, question, answer, function(error, answer) {
+          polls.addAnswer(permalink, question, answer, function(error, answer) {
             if (error)
               next(error);
             else{
@@ -436,10 +436,6 @@ module.exports = function(app) {
         });
       }
     },
-
-
-
-
 
     //Viewing results of a survey
     results : {
@@ -465,45 +461,17 @@ module.exports = function(app) {
               res.redirect("/404");
           }
           else {
-            var results = [];
-            for(var i=0; i<poll.questnumber; i++){
-              //console.log(poll.questnumber);
-              poll.question[i].res=[];
-              results[i] = [];
-
-              //Iterates through the propositions
-              if(poll.question[i].isCheck || poll.question[i].isRadio){
-
-                //Array with same length than props with number of time the answer was chosen
-                for(var j=0; j<poll.question[i].props.length; j++)
-                {
-                  answers.countAnswers(permalink, i, j, poll.question[i].props[j], function(error, count, k, l){
-
-                    if(error) {
-                    }
-                    else {
-                      results[k][l]=count;
-                      poll.question[k].res=results[k];
-                    }
-                  });
-                }
+            polls.getAnswers(permalink, function(error, answers) {
+              for(var i=0; i<poll.questnumber; i++) {
+                poll.question[i].res = answers[i];
               }
-
-              //If text question, array with all the answers
-              else {
-                answers.getTextAnswers(permalink, i, function(error, textanswers, k) {
-                  if(error) {}
-                  else {
-                    poll.question[k].res=textanswers;
-                  }
-                });
-              }
-            }
-            return res.render('results', {
-              session: req.cookies.session,
-              user: req.cookies.user,
-              poll: poll,
-              glob: glob
+              var glob = answers[0].length;
+              return res.render('results', {
+                session: req.cookies.session,
+                user: req.cookies.user,
+                poll: poll,
+                glob: glob
+              });
             });
           }
         });

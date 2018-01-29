@@ -76,26 +76,18 @@
         <h4>Check out the last public surveys</h4>
       </div>
       <div class="panel-body">
-        <table class="table">
-          <tr>
-            <td class="col-md-4"><h4>Survey title</h4></td>
-            <td class="col-md-4"><h4>Subtitle</h4></td>
-            <td class="col-md-2"><h4>Author</h4></td>
-            <td class="col-md-2"><h4>Closing date</h4></td>
-          </tr>
-        </table>
         <table class="table table-hover">
           {{#polls}}
           <tr>
-            <td class="col-md-4"><h5><a href="/polls/{{permalink}}" class="no-blue-link">{{title}}</a></h5></td>
+            <td class="col-md-5"><h5><a href="/polls/{{permalink}}" class="no-blue-link">{{title}}</a></h5></td>
             <td class="col-md-4"><h5><small>{{subtitle}}</small></h5></td>
-            <td class="col-md-2"><h6>{{authorfirst}} {{authorlast}}</h6></td>
-            <td class="col-md-2"><h6>{{closingdate}}</h6></td>
+            <td class="col-md-3"><h6>{{authorfirst}} {{authorlast}}</h6></td>
           </tr>
           {{/polls}}
         </table>
       </div>
     </div>
+
   </div>
 </body>
 </html>

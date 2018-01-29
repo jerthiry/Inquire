@@ -1,5 +1,5 @@
 'use strict';
-
+// TODO : check that this is not in use anymore and delete it
 module.exports = function Answers(db) {
 
 	var answers = db.collection("answers"),
@@ -14,7 +14,6 @@ module.exports = function Answers(db) {
         answer: answer,
         errors: {}
       };
-      console.log(entry);
       answers.insert(entry, function (error, result) {
         if (error) return done(error, null);
         return done(error, result);
@@ -33,12 +32,10 @@ module.exports = function Answers(db) {
     },
     //récupération des réponses sous forme de texte pour une question
     getTextAnswers: function(permalink, question, done) {
-
       answers
         .find({permalink : permalink, question: question}, {answer:true, _id: false})
         .toArray(function(error, items) {
           if (error) return done(error, null);
-          console.log(items);
           return done(error, items, question);
         });
     },
