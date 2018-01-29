@@ -20,7 +20,7 @@ mongo.connect(url, function(error, database) {
     initApp(database.db('inquire'));
   }
   else {
-    console.log(error);
+    console.log("Error: " + error);
   }
 });
 

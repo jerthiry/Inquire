@@ -13,7 +13,6 @@ module.exports = function(app) {
   var db = app.get("db"),
       users = new Users(db),
       sessions = new Sessions(db);
-  console.log(typeof(db));
   return {
     //Useful for connection
     authentication: {
@@ -162,7 +161,6 @@ module.exports = function(app) {
               next(error); // next function
           }
           else {
-            console.log(user);
             //Starts a session and updates the cookies
             sessions.startSession(user['_id'], function(error, sessionId) {
               if (error)

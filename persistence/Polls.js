@@ -25,6 +25,7 @@ module.exports = function Polls(db) {
         authorlast: author.lastname,
         permalink: permalink,
         questnumber: questnumber,
+        anscount: 0,
         errors: {}
       };
       polls.insert(entry, function (error, result) {
@@ -43,7 +44,7 @@ module.exports = function Polls(db) {
           return done(error, items);
         });
       },
-      //récupération de tous les questionnaires publique
+      //récupération de tous les questionnaires publics
       getPublicPolls: function(done) {
         var today = new Date();
         var dd = today.getDate();
@@ -79,7 +80,6 @@ module.exports = function Polls(db) {
       getPollByPermalink: function(permalink, done) {
         polls.findOne({'permalink': permalink}, function(error, poll) {
           if (error) return done(error, null);
-          console.log(poll);
           return done(error, poll);
         });
       },
@@ -91,14 +91,73 @@ module.exports = function Polls(db) {
             var tab = [];
             poll.question = tab;
           }
+          // Update the question count
           poll.questnumber = poll.questnumber+1;
           question.number = poll.questnumber;
-          poll.question[poll.question.length]=question;
+
+          // Array containing the answers
+          question.answers = [];
+          // Dictionary containing the number of time the proposition was selectionned
+          if (question.isRadio || question.isCheck) {
+            var ansCount = {};
+            for(var i=0; i<question.props.length; i++) {
+              ansCount[question.props[i]] = 0;
+            }
+            question.ansCount = ansCount;
+          }
+
+          // Add the question
+          poll.question[poll.question.length] = question;
 
           polls.update({permalink: permalink}, poll, function(error, count) {
             if (error) return done(error, null);
             return done(error, count);
           });
+        });
+      },
+      /* ANSWERS */
+      // Add an answer to a question
+      addAnswer : function(permalink, question, answer, done) {
+        this.getPollByPermalink(permalink, function(error, poll) {
+          var k = question-1;
+          // For one or multiple choice, also update count on answers for quick computations
+          if (poll.question[k].isRadio || poll.question[k].isCheck) {
+            poll.question[k].answers.push(Array(answer));
+            if(Array.isArray(answer)) {
+              for(var i=0; i<answer.length; i++) {
+                poll.question[k].ansCount[answer[i]] += 1;
+              }
+            }
+            else {
+              poll.question[k].ansCount[answer] += 1;
+            }
+          }
+          else {
+            poll.question[k].answers.push(answer);
+          }
+          polls.update({permalink: permalink}, poll, function(error, count) {
+            if (error) return done(error, null);
+            return done(error, count);
+          });
+        });
+      },
+      // Get the answers to display them in results page
+      getAnswers : function(permalink, done) {
+        this.getPollByPermalink(permalink, function(error, poll) {
+          var answers = [];
+          for(var i=0; i<poll.questnumber; i++) {
+            var questionanswers = [];
+            if(poll.question[i].isCheck || poll.question[i].isRadio) {
+              for(var j=0; j<poll.question[i].props.length; j++) {
+                questionanswers.push(poll.question[i].ansCount[poll.question[i].props[j]]);
+              }
+              answers.push(questionanswers);
+            }
+            else {
+              answers.push(poll.question[i].answers);
+            }
+          }
+          return done(error, answers);
         });
       }
     };

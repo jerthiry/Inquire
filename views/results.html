@@ -11,7 +11,7 @@
   <link href="../../styles/bootstrap.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  <link href="styles/custom.css" rel="stylesheet">
+  <link href="../../styles/custom.css" rel="stylesheet">
 </head>
 
 <body>
@@ -61,9 +61,10 @@
 <div class="text-justify container">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3><input type="text" class="no-border-input" value="{{poll.title}}" name="title" readonly><br>
-            <small><input type="text" class="no-border-input" value="{{poll.subtitle}}" name="subtitle" readonly></small></h3>
-            <h4><small><input type="text" class="no-border-input" value="{{poll.authorfirst}} {{poll.authorlast}}" name="author" readonly></small></h4>
+          <h4><input type="text" class="no-border-input" value="{{poll.title}}" name="title" readonly><br>
+            <small><input type="text" class="no-border-input" value="{{poll.subtitle}}" name="subtitle" readonly></small>
+          </h4>
+          <h4><small><input type="text" class="no-border-input text-right" value="Created by {{poll.authorfirst}} {{poll.authorlast}}" name="author" readonly></small></h4>
           </div>
           <div class="panel-body">
             <div class="well">
@@ -115,12 +116,12 @@
                   </td>
 
                 </table>
-                  {{/isCheck}}
-                  {{#isText}}
+                {{/isCheck}}
+                {{#isText}}
 
                   {{#res}}
                   <div class="well">
-                  {{answer}}
+                  {{.}}
                   </div>
                   {{/res}}
                   {{/isText}}
