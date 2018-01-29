@@ -11,14 +11,12 @@
 
 var Polls = require('../persistence/Polls');
 var Users = require('../persistence/Users');
-var Answers = require('../persistence/Answers');
 
 module.exports = function(app) {
 
   var db = app.get("db"),
       polls = new Polls(db),
-      users =  new Users(db),
-      answers = new Answers(db);
+      users =  new Users(db);
 
   return {
     //Renders the home page, with public polls
@@ -442,15 +440,6 @@ module.exports = function(app) {
 
       getAnswers: function (req, res, next) {
         var permalink = req.params.permalink;
-        var glob;
-        answers.countGlobalAnswers(permalink, 0,function(error, count){
-          if (error) {
-            next(error);
-          }
-          else {
-          glob=count;
-          }
-        });
         polls.getPollByPermalink(permalink, function(error, poll) {
           //console.log(poll.author+req.cookies.user.username);
           if (error)

@@ -110,3 +110,17 @@
   background-color: #4178b1 !important;
   color: #fff !important;
 }
+
+/* Button alignments in navbar */
+
+.navbar-collapse > .navbar-right > ul > li > a {
+  padding-left: 0px !important;
+  margin-left: -30px !important;
+}
+
+
+.navbar-collapse.in > .navbar-right > ul > li > a {
+  text-align: center;
+  padding-left: 15px !important;
+  margin-left: 20px !important;
+}
