@@ -1,5 +1,7 @@
 # Inquire
 
+![inquire](/images/logo_transparent.png)
+
 ## A web app to create, fill and manage surveys online.
 
 Created by Jérôme Thiry ([@jerthiry](https://github.com/jerthiry)) & Rémy Vermeiren ([@rvermeiren](https://github.com/rvermeiren))
@@ -24,5 +26,7 @@ After that, all there is left to do is start the app !
 	$ npm start -- <mongodb_password>
 
 The app is then available on [localhost:3000]().
+
+![inquire](/images/survey_example.png)
 
 The app is only available on localhost for now.
