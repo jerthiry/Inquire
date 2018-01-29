@@ -4,169 +4,91 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>inQuire</title>
+  <title>inQuire - Surveys made easy</title>
 
   <!-- Bootstrap & js for animated menus-->
   <link rel="icon" href="/images/favicon.ico" />
   <link href="styles/bootstrap.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <link href="styles/custom.css" rel="stylesheet">
+</head>
 
-
-
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-      <![endif]-->
-
-
-    </head>
-
-    <body>
-
-
-      <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-          <a class="navbar-brand" href="/">
-
-            <img class="hidden-xs logo-desktop" src="../images/logo.png" alt="">
-            <img class="visible-xs logo-mobile"src="../images/logo.png">
-          </a>
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>                        
-            </button>
-
-
-            
-          </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-            {{#session}}
-            <ul class="nav navbar-nav">
-              
-              <li><a href="/">Home</a></li>
-              
-              <li><a href="/polls">New survey</a></li>
-              <li><a href="/mypolls">My surveys</a></li>
-            </ul>
-            {{/session}}
-            <div class="nav navbar-nav navbar-right">
-              
-              {{^session}}
-              <ul class="nav navbar-nav navbar-right">
-              <li><a href="/login"><button class="btn btn-primary navbar-btn">Log in</button></a></li>
-              <li><a href="/signup"><button class="btn btn-primary navbar-btn">Sign up</button></a></li>
-              </ul>
-              {{/session}}
-
-              {{#session}}
-              <ul class="nav navbar-nav navbar-right">
-
-                <li><a class="no-blue-navbar hidden-xs" href="/profile">Welcome, {{user.firstname}} {{user.lastname}} ! </a></li>
-                <li><a class="no-blue-navbar visible-xs" href="/profile">Profile</a></li>
-                <li><a href="/logout"><button class="btn btn-primary navbar-btn">Log out</button></a></li>
-              </ul>
-              {{/session}}
-            </div>
-          </div>
-        </div>
-      </nav> <!-- Navbar Ending -->
-
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-      {{^session}}
-        <div class ="jumbotron">
-          <img src="/images/logo.png" class="img-responsive img-jumb" alt="Responsive image">
-          <p class="text-justify"><em>inQuire</em> is an intuitive tool to create online surveys.
-          Once signed up, you can create and choose the settings to surveys regarding anything that comes to your mind, and then view the results associated. Wheter for business or between friends, inQuire is the ideal solution.</p>
-          <div class="text-right">
-            <a href="/signup"><button type="button" class="btn btn-default">Sign up</button></a>
-          </div>
-        </div>
-      {{/session}}
+      <a class="navbar-brand" href="/">
+        <img class="hidden-xs logo-desktop" src="../images/logo.png" alt="">
+        <img class="visible-xs logo-mobile"src="../images/logo.png">
+      </a>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        {{#session}}
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/polls">New survey</a></li>
+          <li><a href="/mypolls">My surveys</a></li>
+        </ul>
 
-      <div class="panel panel-default">
+        {{/session}}
+        <div class="nav navbar-nav navbar-right">
+          {{^session}}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/login"><button class="btn btn-default navbar-btn">Log in</button></a></li>
+            <li><a href="/signup"><button class="btn btn-default navbar-btn">Sign up</button></a></li>
+          </ul>
+          {{/session}}
+
+          {{#session}}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a class="no-blue-navbar hidden-xs" href="/profile">Welcome, {{user.firstname}} {{user.lastname}} ! </a></li>
+            <li><a class="no-blue-navbar visible-xs" href="/profile">Profile</a></li>
+            <li><a href="/logout"><button class="btn btn-default navbar-btn">Log out</button></a></li>
+          </ul>
+          {{/session}}
+        </div>
+
+      </div>
+    </div>
+  </nav> <!-- Navbar Ending -->
+
+  <div class="container">
+
+    {{^session}}
+    <div class ="jumbotron">
+      <img src="/images/logo_large.png" class="img-responsive img-jumb" alt="Responsive image">
+      <p class="text-justify"><em>inQuire</em> is an intuitive tool to create online surveys.
+        Once signed up, you can create and choose the settings to surveys regarding anything that comes to your mind, and then view the results associated. Whether for business or between friends, inQuire is the ideal solution.</p>
+      <div class="text-right">
+        <a href="/login"><button type="button" class="btn btn-default">Log in</button></a>
+        <a href="/signup"><button type="button" class="btn btn-default">Sign up</button></a>
+      </div>
+    </div>
+    {{/session}}
+
+    <div class="panel panel-default">
       <div class="panel-heading">
-        <h3>Last surveys</h3>
+        <h4>Check out the last public surveys</h4>
       </div>
       <div class="panel-body">
-
-
-
-        <table class="table">
-        <tr>
-          <td class="col-md-4"><h4>Survey title</h4></td>
-          <td class="col-md-4"><h4>Subtitle</h4></td>
-          <td class="col-md-2"><h4>Author</h4></td>
-          <td class="col-md-2"><h4>Closing date</h4></td>
-        </tr>
-        </table>
         <table class="table table-hover">
-        {{#polls}}
-
-
+          {{#polls}}
           <tr>
-            <td class="col-md-4"><h5><a href="/polls/{{permalink}}" class="no-blue-link">{{title}}</a></h5></td>
+            <td class="col-md-5"><h5><a href="/polls/{{permalink}}" class="no-blue-link">{{title}}</a></h5></td>
             <td class="col-md-4"><h5><small>{{subtitle}}</small></h5></td>
-            <td class="col-md-2"><h6>{{authorfirst}} {{authorlast}}</h6></td>
-            <td class="col-md-2"><h6>{{closingdate}}</h6></td>
+            <td class="col-md-3"><h6>{{authorfirst}} {{authorlast}}</h6></td>
           </tr>
-        {{/polls}}
+          {{/polls}}
         </table>
       </div>
-
-
-
     </div>
-  </body>
+
+  </div>
+</body>
 </html>
-
-
-
-
-
-
-
-
-
-<!--     <nav class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="index.html">inQuire</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li><a href="mypolls.html">Sondages</a></li>
-                <li><button href="login.html" class="btn btn-success navbar-right vcenter">Log in</button></li>
-              </ul>
-                {{^session}}
-                  <form class="navbar-form navbar-right" method="post" >
-                    {{#errors.username}}<label class="error">{{errors.username}}</label>{{/errors.username}}
-                    {{#errors.password}}<label class="error">{{errors.password}}</label>{{/errors.password}}
-                    <div class="form-group">
-                      <input type="text" placeholder="Username" name="username" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <input type="password" placeholder="Password" name="password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-success">Log in</button>
-                  </form>
-                  <button href="login.html" class="btn btn-success navbar-right vcenter">Log in</button>
-                {{/session}}
-                {{#session}}
-                  <a href="mypolls.html">{{username}} LOL</a>
-                  <button type="submit" class="btn btn-success">Log in</button>
-                {{/session}}
-
-            </div><!/.navbar-collapse 
-          </div>
-        </nav> -->

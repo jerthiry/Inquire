@@ -17,7 +17,7 @@ module.exports = exports = function(app) {
 
   app.use(handlers.session.authentication.check);
 
-  //Index 
+  //Index
   app.get('/', handlers.content.home);
 
   //Signup page

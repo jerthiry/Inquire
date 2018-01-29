@@ -10,11 +10,9 @@ var Users = require('../persistence/Users'),
     UnknownUserError = require('../persistence/errors/UnknownUser');
 
 module.exports = function(app) {
-
   var db = app.get("db"),
       users = new Users(db),
       sessions = new Sessions(db);
-
   return {
     //Useful for connection
     authentication: {

@@ -11,139 +11,114 @@
   <link href="styles/bootstrap.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <link href="styles/custom.css" rel="stylesheet">
+</head>
 
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img class="hidden-xs logo-desktop" src="../images/logo.png" alt="">
+        <img class="visible-xs logo-mobile"src="../images/logo.png">
+      </a>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        {{#session}}
+        <ul class="nav navbar-nav">
 
+          <li><a href="/">Home</a></li>
 
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-      <![endif]-->
+          <li><a href="/polls">New survey</a></li>
+          <li><a href="/mypolls">My surveys</a></li>
+        </ul>
+        {{/session}}
+        <div class="nav navbar-nav navbar-right">
 
+          {{^session}}
+          <ul class="nav navbar-nav navbar-right">
+          <li><a href="/login"><button class="btn btn-primary navbar-btn">Log in</button></a></li>
+          <li><a href="/signup"><button class="btn btn-primary navbar-btn">Sign up</button></a></li>
+          </ul>
+          {{/session}}
 
-    </head>
+          {{#session}}
+          <ul class="nav navbar-nav navbar-right">
 
-    <body>
-
-
-      <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-                    <a class="navbar-brand" href="/">
-
-                <img class="hidden-xs logo-desktop" src="../images/logo.png" alt="">
-                <img class="visible-xs logo-mobile"src="../images/logo.png">
-                </a>
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>                        
-            </button>
-
-
-            
-          </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-            {{#session}}
-            <ul class="nav navbar-nav">
-              
-              <li><a href="/">Home</a></li>
-              
-              <li><a href="/polls">New survey</a></li>
-              <li><a href="/mypolls">My surveys</a></li>
-            </ul>
-            {{/session}}
-            <div class="nav navbar-nav navbar-right">
-              
-              {{^session}}
-              <ul class="nav navbar-nav navbar-right">
-              <li><a href="/login"><button class="btn btn-primary navbar-btn">Log in</button></a></li>
-              <li><a href="/signup"><button class="btn btn-primary navbar-btn">Sign up</button></a></li>
-              </ul>
-              {{/session}}
-
-              {{#session}}
-              <ul class="nav navbar-nav navbar-right">
-
-                <li><a class="no-blue-navbar hidden-xs" href="/profile">Welcome, {{user.firstname}} {{user.lastname}} ! </a></li>
-                <li><a class="no-blue-navbar visible-xs" href="/profile">Profile</a></li>
-                <li><a href="/logout"><button class="btn btn-primary navbar-btn">Log out</button></a></li>
-              </ul>
-              {{/session}}
-            </div>
-          </div>
-        </div>
-      </nav> <!-- Navbar Ending -->
-
-    <div class="container"> 
-      <div class="text-justify">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3>Create a new survey <small><br></small></h3>
-          </div>
-          <div class="panel-body">
-
-            <form method="post">
-              <div id="form">
-                <div class="well">
-                  <div class="input-group">
-                    <span class="input-group-addon">Title</span>
-                    <input type="text" class="form-control input-lg" placeholder="Title" name="title" value="{{title}}">
-                  </div>
-                  {{#errors.title}}<label class="error">{{errors.title}}</label>{{/errors.title}}
-
-
-                  <div class="input-group">
-                    <span class="input-group-addon">Subtitle</span>
-                    <input type="text" class="form-control" placeholder="Subtitle" name="subtitle" value="{{subtitle}}">
-                  </div>                
-                  {{#errors.subtitle}}<label class="error">{{errors.subtitle}}</label>{{/errors.subtitle}}
-
-
-                  <div class="input-group">
-                    <span class="input-group-addon">Description</span>
-                    <textarea type="text" class="form-control" placeholder="Give a short description for your survey..." name="description">{{description}}</textarea>
-                  </div>
-                  {{#errors.description}}<label class="error">{{errors.description}}</label>{{/errors.description}}                
-                </div>
-
-                <div class="well">
-                  <div class="input-group">
-                    <span class="input-group-addon">Starting date</span>
-                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="startingdate" value="{{startingdate}}">
-                  </div>
-                  {{#errors.startingdate}}<label class="error">{{errors.startingdate}}</label>{{/errors.startingdate}}
-
-                  <div class="input-group">
-                    <span class="input-group-addon">Closing date</span>
-                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="closingdate" value="{{closingdate}}">
-                  </div>                
-                  {{#errors.closingdate}}<label class="error">{{errors.closingdate}}</label>{{/errors.closingdate}}
-
-                </div>
-
-                <div class="well">
-                {{#errors}}<label class="error">Please reselect your privacy setting.</label>{{/errors}}
-                 <div class="input-group">
-                    <span class="input-group-addon">Privacy setting</span>
-                    <select class="form-control" name="privacy">
-                      <option value=false>Public</option>
-                      <option value=true>Private</option>
-                    </select>
-
-
-                  </div>            
-                </div>
-              </div>
-               <button type="submit" class="btn btn-primary pull-right">Create a new survey</button>
-            </form>
-            <!-- <button id="addDiv" onclick="appendDiv()" class="btn btn-primary pull-right">Add a question</button>  -->
-           
-
-          </div>
+            <li><a class="no-blue-navbar hidden-xs" href="/profile">Welcome, {{user.firstname}} {{user.lastname}} ! </a></li>
+            <li><a class="no-blue-navbar visible-xs" href="/profile">Profile</a></li>
+            <li><a href="/logout"><button class="btn btn-default navbar-btn">Log out</button></a></li>
+          </ul>
+          {{/session}}
         </div>
       </div>
     </div>
-  </body>
-  </html>
+  </nav> <!-- Navbar Ending -->
+
+  <div class="container">
+    <div class="text-justify">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3>Create a new survey <small><br></small></h3>
+        </div>
+        <div class="panel-body">
+
+          <form method="post">
+            <div id="form">
+              <div class="well">
+                <div class="input-group">
+                  <span class="input-group-addon">Title</span>
+                  <input type="text" class="form-control input-lg" placeholder="Title" name="title" value="{{title}}">
+                </div>
+                {{#errors.title}}<label class="error">{{errors.title}}</label>{{/errors.title}}
+                <div class="input-group">
+                  <span class="input-group-addon">Subtitle</span>
+                  <input type="text" class="form-control" placeholder="Subtitle" name="subtitle" value="{{subtitle}}">
+                </div>
+                {{#errors.subtitle}}<label class="error">{{errors.subtitle}}</label>{{/errors.subtitle}}
+                <div class="input-group">
+                  <span class="input-group-addon">Description</span>
+                  <textarea type="text" class="form-control" placeholder="Give a short description for your survey..." name="description">{{description}}</textarea>
+                </div>
+                {{#errors.description}}<label class="error">{{errors.description}}</label>{{/errors.description}}
+              </div>
+
+              <div class="well">
+                <div class="input-group">
+                  <span class="input-group-addon">Starting date</span>
+                  <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="startingdate" value="{{startingdate}}">
+                </div>
+                {{#errors.startingdate}}<label class="error">{{errors.startingdate}}</label>{{/errors.startingdate}}
+
+                <div class="input-group">
+                  <span class="input-group-addon">Closing date</span>
+                  <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="closingdate" value="{{closingdate}}">
+                </div>
+                {{#errors.closingdate}}<label class="error">{{errors.closingdate}}</label>{{/errors.closingdate}}
+
+              </div>
+
+              <div class="well">
+              {{#errors}}<label class="error">Please reselect your privacy setting.</label>{{/errors}}
+               <div class="input-group">
+                  <span class="input-group-addon">Privacy setting</span>
+                  <select class="form-control" name="privacy">
+                    <option value=false>Public</option>
+                    <option value=true>Private</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary pull-right">Create a new survey</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

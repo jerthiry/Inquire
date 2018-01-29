@@ -1,0 +1,126 @@
+.navbar {
+  background-color: #4178b1;
+  border-color: #2b5580;
+}
+.navbar .navbar-brand {
+  color: #4178b1;
+}
+.navbar .navbar-brand:hover,
+.navbar .navbar-brand:focus {
+  color: #ffffff;
+}
+.navbar .navbar-text {
+  color: #ffffff;
+}
+.navbar .navbar-nav > li > a {
+  color: #ffffff;
+}
+.navbar .navbar-nav > li > a:hover,
+.navbar .navbar-nav > li > a:focus {
+  color: #ddf;
+}
+.navbar .navbar-nav > .active > a,
+.navbar .navbar-nav > .active > a:hover,
+.navbar .navbar-nav > .active > a:focus {
+  color: #ffffff;
+  background-color: #2b5580;
+}
+.navbar .navbar-nav > .open > a,
+.navbar .navbar-nav > .open > a:hover,
+.navbar .navbar-nav > .open > a:focus {
+  color: #ffffff;
+  background-color: #2b5580;
+}
+.navbar .navbar-toggle {
+  border-color: #2b5580;
+}
+.navbar .navbar-toggle:hover,
+.navbar .navbar-toggle:focus {
+  background-color: #2b5580;
+}
+.navbar .navbar-toggle .icon-bar {
+  background-color: #4178b1;
+}
+.navbar .navbar-collapse,
+.navbar .navbar-form {
+  border-color: #4178b1;
+}
+.navbar .navbar-link {
+  color: #4178b1;
+}
+.navbar .navbar-link:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .navbar .navbar-nav .open .dropdown-menu > li > a {
+    color: #4178b1;
+  }
+  .navbar .navbar-nav .open .dropdown-menu > li > a:hover,
+  .navbar .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #ffffff;
+  }
+  .navbar .navbar-nav .open .dropdown-menu > .active > a,
+  .navbar .navbar-nav .open .dropdown-menu > .active > a:hover,
+  .navbar .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #ffffff;
+    background-color: #2b5580;
+  }
+}
+
+/* Set the colors on the navbar */
+
+.navbar-btn {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.nav.navbar-nav.navbar-right a {
+  color: #fff;
+}
+
+.nav.navbar-nav.navbar-right a:hover,
+.nav.navbar-nav.navbar-right a:focus {
+  color: #ddf;
+}
+
+.navbar-toggle {
+  background-color: #ffffff44;
+  border: none;
+}
+
+/* Set colors on divs */
+
+.panel-heading > h4 > small,
+.panel-heading > h4 > small > input  {
+  color: #fff !important;
+}
+
+.panel-heading > h3 > small {
+  color: #fff !important;
+}
+
+.jumbotron {
+  background-color: #4178b1;
+  color: #fff;
+}
+
+.panel-heading {
+  background-color: #4178b1 !important;
+  color: #fff !important;
+}
+
+/* Button alignments in navbar */
+
+.navbar-collapse > .navbar-right > ul > li > a {
+  padding-left: 0px !important;
+  margin-left: -30px !important;
+}
+
+
+.navbar-collapse.in > .navbar-right > ul > li > a {
+  text-align: center;
+  padding-left: 15px !important;
+  margin-left: 20px !important;
+}

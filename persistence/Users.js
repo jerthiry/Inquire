@@ -22,7 +22,7 @@ module.exports = function Users(db) {
             };
             users.insert(entry, function (error, result) {
                 if (error) return done(error, null);
-                return done(null, result[0]);
+                return done(null, result);
             });
         },
         //mise à jour d'un utilisateur
@@ -37,7 +37,7 @@ module.exports = function Users(db) {
             users.update({'_id': username}, user, function (error, result) {
               if (error) return done(error, null);
 
-              return done(null, result[0]);
+              return done(null, result);
             });
           });
         },
